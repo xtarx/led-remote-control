@@ -1,0 +1,104 @@
+// NeoPixel Ring simple sketch (c) 2013 Shae Erisson
+// released under the GPLv3 license to match the rest of the AdaFruit NeoPixel library
+
+#include <Adafruit_NeoPixel.h>
+#ifdef __AVR__
+  #include <avr/power.h>
+#endif
+
+// Which pin on the Arduino is connected to the NeoPixels?
+// On a Trinket or Gemma we suggest changing this to 1
+#define PIN            13
+
+// How many NeoPixels are attached to the Arduino?
+#define NUMPIXELS      76 //76 //real count is 57
+
+
+
+// When we setup the NeoPixel library, we tell it how many pixels, and which pin to use to send signals.
+// Note that for older NeoPixel strips you might need to change the third parameter--see the strandtest
+// example for more information on possible values.
+Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_RGBW+NEO_KHZ800);
+uint32_t green = pixels.Color(255, 0, 0);
+uint32_t red = pixels.Color(0, 255, 0);
+int delayval = 50; // delay for half a second
+
+void setup() {
+  //Serial.print("test");
+  Serial.begin(9600);
+
+  // This is for Trinket 5V 16MHz, you can remove these three lines if you are not using a Trinket
+#if defined (__AVR_ATtiny85__)
+  if (F_CPU == 16000000) clock_prescale_set(clock_div_1);
+#endif
+  // End of trinket special code
+
+  pixels.begin(); // This initializes the NeoPixel library.
+}
+
+void setRange(int starting_index, int offset, uint32_t color) {
+    for(int i=starting_index;i<offset+1;i++){
+      pixels.setPixelColor(i, color); 
+      pixels.setBrightness(120);
+      pixels.show(); 
+  }
+
+}
+
+void demo(){
+  for(int i=0; i<NUMPIXELS; i+= 10){
+    
+    setRange(i % NUMPIXELS, (20+i) % NUMPIXELS, green);
+    delay(delayval);
+  }
+}
+void loop() {
+//  for(int i=0;i<NUMPIXELS;i++){
+//
+//    // pixels.Color takes RGB values, from 0,0,0 up to 255,255,255
+//    pixels.setPixelColor(i, pixels.Color(0,0,255)); // Moderately bright green color.
+//
+//    pixels.show(); // This sends the updated pixel color to the hardware.
+//
+//    delay(delayval); // Delay for a period of time (in milliseconds).
+//
+//  }
+  
+     demo();
+ 
+  
+           setRange(0,NUMPIXELS, green);
+
+
+    while(Serial.available()){
+      int section = Serial.parseInt();
+      Serial.print(section);
+      if(section == 0){
+           setRange(0,NUMPIXELS, green);
+ 
+        
+        //delay(1000);
+      }
+      
+      if(section == 1){
+           setRange(0,NUMPIXELS, green);
+ 
+        setRange(0, 20, red);
+        //delay(1000);
+      }
+      if(section == 2){
+            setRange(0,NUMPIXELS, green);
+
+        setRange(21, 40, red);
+        //delay(1000);
+      }
+      if(section == 3){
+            setRange(0,NUMPIXELS, green);
+
+        setRange(40, 60, red);
+        //delay(1000);
+      }
+  }
+  
+
+}
