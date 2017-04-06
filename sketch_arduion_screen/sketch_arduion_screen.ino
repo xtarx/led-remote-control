@@ -23,6 +23,7 @@ uint32_t green = pixels.Color(255, 0, 0,0);
 uint32_t red = pixels.Color(0, 255, 0,0);
 uint32_t blue = pixels.Color(0, 0, 255,0);
 uint32_t off = pixels.Color(0, 0, 0,0);
+uint32_t backgorund = pixels.Color(0, 0, 0,1);
 
 int delayval = 50; // delay for half a second
 
@@ -89,6 +90,7 @@ void setArrowLeft1(int index, uint32_t color) {
 
 
 void door(int index, uint32_t color) {
+  setRange(index, index+4, backgorund);
   setRangeRow(0, index, index+4, color);
   setRangeRow(1, index+1, index+3, color);
   setPixel(2, index+2, color);
@@ -117,6 +119,7 @@ void greenDoorStatic(int index) {
 }
 
 void ex(int index, uint32_t color) {
+  setRange(index, index+4, backgorund);
   setPixel(0, index, color);
   setPixel(2, index, color);
   setPixel(1, index+1, color);
@@ -126,15 +129,15 @@ void ex(int index, uint32_t color) {
 
 void staticLights(){
   setRange(0, NUMPIXELS, pixels.Color(0, 0, 0,1));
-//  greenDoorStatic(20);
-  ex(20, red);
-  ex(50, red);
   door(5, green);
+  door(20, green);
   door(35, green);
+  door(50, green);
 }
 
 void setup() {
   Serial.print("test");
+  Serial.begin(9600);
 
   // This is for Trinket 5V 16MHz, you can remove these three lines if you are not using a Trinket
 #if defined (__AVR_ATtiny85__)
@@ -146,16 +149,45 @@ void setup() {
   staticLights();
   pixels.show();
   pixels.setBrightness(120);
-
 }
 
 void repeat(){
   greenDoorBlinking(5);
   greenDoorBlinking(35);
-  
 }
+
+
 
 void loop() {
 //  repeat();
+    if(Serial.available()){
+      int section = Serial.parseInt();
+      Serial.print(section);
+      
+      if(section == 0){
+          staticLights();
+      }
+      if(section == 1){
+          staticLights();
+           ex(5, red);
+      }
+      if(section == 2){
+          staticLights();
+          ex(20, red);
+      }
+      if(section == 3){
+        staticLights();
+          ex(35, red);
+
+      }
+      if(section == 4){
+        staticLights();
+        ex(50, red);
+      }
+      pixels.show();
+      delay(200);
+
+  }
+
 
 }
