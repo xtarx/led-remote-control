@@ -9,8 +9,10 @@ faceCascade = cv2.CascadeClassifier('Face_cascade.xml')
 ramp_frames = 30
 video_capture = cv2.VideoCapture(0)
 video_capture_2 = cv2.VideoCapture(2)
-
 cv2.resizeWindow('Video', 600,600)
+
+cv2.namedWindow("camera1", cv2.WINDOW_AUTOSIZE)
+cv2.namedWindow("camera2",cv2.WINDOW_AUTOSIZE)
 
 #ser = serial.Serial('/dev/cu.usbmodem1D1121',9600)
 
@@ -22,7 +24,7 @@ def faceExtractor(camera, gray):
 
     print "Camera:{0} Found {1} faces!".format(camera, len(faces))
 
-    visualiseLed(1, faces)
+    visualiseLed(camera, faces)
 
     # Draw a rectangle around the faces
     for (x, y, w, h) in faces:
@@ -30,8 +32,8 @@ def faceExtractor(camera, gray):
 
     # Display the resulting frame
     if frame is not None:
-        imS = cv2.resize(frame, (960, 540))  # Resize image
-        cv2.imshow('Video', imS)
+        imS = cv2.resize(frame, (600, 400))  # Resize image
+        cv2.imshow('camera'+str(camera), imS)
         # cv2.imshow(imS)
 
 
