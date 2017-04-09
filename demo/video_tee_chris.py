@@ -3,12 +3,13 @@ import sys
 import serial
 import time
 import os
+dir = os.path.dirname(__file__)
 
 sleep_interval=1
-faceCascade = cv2.CascadeClassifier('Face_cascade.xml')
+faceCascade = cv2.CascadeClassifier(os.path.join(dir, 'Face_cascade.xml'))
 ramp_frames = 30
 video_capture = cv2.VideoCapture(0)
-video_capture_2 = cv2.VideoCapture(2)
+video_capture_2 = cv2.VideoCapture(1)
 cv2.resizeWindow('Video', 600,600)
 
 cv2.namedWindow("camera1", cv2.WINDOW_AUTOSIZE)
@@ -34,7 +35,6 @@ def faceExtractor(camera, gray):
     if frame is not None:
         imS = cv2.resize(frame, (600, 400))  # Resize image
         cv2.imshow('camera'+str(camera), imS)
-        # cv2.imshow(imS)
 
 
 def visualiseLed(camera, faces_count):
