@@ -167,22 +167,32 @@ void loop() {
       if(section == 0){
           staticLights();
       }
-      if(section == 1){
-          staticLights();
-           ex(5, red);
+      else if(section == 1){
+          ex(5, red);
       }
-      if(section == 2){
-          staticLights();
+      else if(section == 2){
           ex(20, red);
       }
-      if(section == 3){
-        staticLights();
+      else if(section == 3){
           ex(35, red);
 
       }
-      if(section == 4){
-        staticLights();
-        ex(50, red);
+      else if(section == 4){
+          ex(50, red);
+      }
+
+      else if(section == 5){
+          door(5, green);
+      }
+      else if(section == 6){
+          door(20, green);
+      }
+      else if(section == 7){
+          door(35, green);
+
+      }
+      else if(section == 8){
+          door(50, green);
       }
       pixels.show();
       delay(200);
